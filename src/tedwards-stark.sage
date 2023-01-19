@@ -382,6 +382,20 @@ def scaling(a, d, prime):
             d_ = a
     return a_ , d_ , f
 
+def StarkJubOldCheck():
+    r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
+    Fr = GF(r)
+    A = Fr(110430)
+    B = Fr(1)
+
+    ExamineMontgomeryParameters(Fr, A, B)
+    (a, d) = Curve_MontgomeryToEdwards(Fr, A, B)
+    print(a, d)
+
+    ExamineEdwardsParameters(Fr, Fr(a), Fr(d))
+    (A, B) = Curve_EdwardsToMontgomery(Fr, a, d)
+    ExamineMontgomeryParameters(Fr, A, B)
+
 def StarkJubCheckFoundNewEdwards():
     r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
     Fr = GF(r)
@@ -399,7 +413,19 @@ def StarkJubCheckFoundNewEdwards():
     print(f)
 
 
-    
+def StarkJubNewCheck():
+    r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
+    Fr = GF(r)
+    A = Fr(146638)
+    B = Fr(1)
+
+    ExamineMontgomeryParameters(Fr, A, B)
+    (a, d) = Curve_MontgomeryToEdwards(Fr, A, B)
+    print(a, d)
+
+    ExamineEdwardsParameters(Fr, Fr(a), Fr(d))
+    (A, B) = Curve_EdwardsToMontgomery(Fr, a, d)
+    ExamineMontgomeryParameters(Fr, A, B)
 
 def StarkJubCheck():
     #r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
@@ -482,7 +508,9 @@ def JubJubCheck():
     assert(x1 == nx1)
     assert(y1 == ny1)
 
-StarkJubCheckFoundNewEdwards() 
+#StarkJubOldCheck()
+StarkJubNewCheck()
+#StarkJubCheckFoundNewEdwards() 
 #EnsureValidEdwardsStarkJub()
 #JubJubCheck_Less()
 #StarkJubCheck()

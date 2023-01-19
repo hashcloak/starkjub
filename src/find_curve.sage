@@ -98,6 +98,11 @@ print("l : " , s)
 N = h * s # order of the curve
 print(factor(EC.quadratic_twist().order()))
 
+c = Fr(452312848583266401712165347886883763197416885958242462530951491185349408851)
+print(c)
+print(is_prime(c))
+assert(is_prime(c) == True)
+
 
 # get generator point
 u_gen, v_gen, w_gen = findGenPoint(prime, A, EC, N)
