@@ -7,16 +7,12 @@ def inv(x, p):
 class StarkJub:
     def __init__(self):
         self.p = pow(2, 251) + 17 * pow(2, 192) + 1
-        #self.a = 3618502788666131213697322783095070105623107215331596699973092056135872020480
-        #self.d = 36659 # it is unknown for now.
         self.a = 146640
         self.d = 146636
         self.identity = Point(0, 1, self)
-        # order of the elliptic curve? -> Bu fonksiyon sage'de varmış.
         self.O = 452312848583266401712165347886883763197416885958242462530951491185349408851
         #self.O = (2**3) *452312848583266401712165347886883763197416885958242462530951491185349408851
 
-        
 
     def point(self, x, y):
         return Point(x, y, self)
@@ -27,11 +23,11 @@ class Point:
         self.y = y
         self.EC = EC
 
-        #if not Point.validate(self):
-        #    raise Exception(f"Provided coordinates {self} don't form a point on that curve")
-        if Point.validate(self):
+        if not Point.validate(self):
+            raise Exception(f"Provided coordinates {self} don't form a point on that curve")
+        #if Point.validate(self):
             #print(str(self.x) + " , " +str(self.y) +"does not form a point")
-            print("point")
+            #print("point")
 
         # Point Validation in __init__
     def __neg__(self):
@@ -50,22 +46,19 @@ class Point:
         y = ((y1 * y2 - a * x1 * x2) * inv(1 - s, p)) % p
         return Point(x, y, self.EC)
 
-    # currently not working
     def __rmul__(self, other):
         if not isinstance(other, int) and not isinstance(self, Point):
             raise Exception('You can multiply only point by integer')
         else:
-            Q = self.EC.O
-            Q2 = Q
-            bits = bin(other)[2:]
-            min_number_of_bits = 64
-            bits = '0' * (min_number_of_bits - len(bits)) + bits
-            for b in bits[::-1]:
-                Q2 = Q + self
-                if b == '1':
-                    Q = Q2
-                self = self + self
-            return 
+            res = self.EC.identity
+            addend = self
+            
+            for i in bin(other)[2:][::-1]:
+                if i == "1":
+                    res = res + addend
+                addend = addend + addend
+            return res
+                
 
     def __mul__(self, other):
         return self.__rmul__(other)
@@ -81,10 +74,22 @@ class Point:
     def __repr__(self):
         return f'({self.x}, {self.y})'
 
+    # It's not efficient for now. For efficiency,
+    # we'll use doubling formula on twisted edwards curve
+    def double(self):
+        return self + self
+
     def validate(self):
         x, y, a, d, p = self.x, self.y, self.EC.a, self.EC.d, self.EC.p
         return ((a*x**2+y**2-1-d*x**2*y**2) % p == 0 and
                 (0 <= x < p) and (0 <= y < p))
+
+    def print_validation(self):
+        if self.validate():
+            print("point")
+        else:
+            print("not a point")
+
         
 
     def compress(self):
@@ -116,18 +121,37 @@ class Point:
         return EC.point(x, y)
 
 def main():
-    print("HelloWorld")
     ECC = StarkJub()
+    # Generator point starts with 206, 166
     #P = Point(2192997259653830321980110858627110452394882798306613832002354879583275243830, 1870298999876184600770095838537746999597803359289427334927271486896920468444, ECC)
-    P = Point(2065699795511519733436237708177164622668357918131020778486714673024550645584, 1666035597895264107928948444893966434436309134596180408598119672656400359905, ECC)
-    P.validate()
+    P = Point(2065699795511519733436237708177164622668357918131020778486714673024550645584, 1666035597895264107928948444893966434436309134596180408598119672656400359905, ECC)    
     print(P)
+    P.print_validation()
+
     G = P + P
     print(G)
-    G.validate()
-    T = G + P
-    T.validate()
-    print(T)
-    
+    G.print_validation()
+
+    Double = P.double()
+    print(Double)
+    Double.print_validation()
+
+    assert(G == Double)
+
+    C = P * 11
+    print(C)
+    C.print_validation()
+
+    D11 = P * 4 + 7 * P
+    print(D11)
+    D11.print_validation()
+
+    assert(C == D11)
+
+    MAX = P * (P.EC.O + 1)
+    print(MAX)
+    MAX.validate()
+    MAX.print_validation()
+
 if __name__ == "main":
     main()
