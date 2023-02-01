@@ -1,4 +1,6 @@
-#https://www.heise.de/netze/rfc/rfcs/rfc7748.shtml
+# This repository is forked from https://github.com/barryWhiteHat/baby_jubjub/blob/master/findCurve.sage
+# Made some changes in it
+
 import sys
 import pdb
 from sage.all import *
@@ -68,20 +70,15 @@ def isOnEd_Validate(x, y, p, a, d):
   return ((a*x**2+y**2-1-d*x**2*y**2) % p == 0 and
                 (0 <= x < p) and (0 <= y < p))
 
-#prime for finding Starkcurve
+#prime for STARK curve: https://docs.starkware.co/starkex/crypto/stark-curve.html
 prime = 3618502788666131213697322783095070105623107215331596699973092056135872020481
-
-#prime for Babyjubjub curve
-#prime = 21888242871839275222246405745257275088548364400416034343698204186575808495617
 
 Fr = GF(prime)
 h = 8 # cofactor
 
-# A = 110430 # Candidate 1
 A = 146638 # Candidate 2
 A, EC = find1Mod4(prime, h, 4, A)
 
-# A = 170214 another candidate
 B = 1
 a = A + 2 / B
 d = A - 2 / B

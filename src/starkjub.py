@@ -11,8 +11,7 @@ class StarkJub:
         self.d = 146636
         self.identity = Point(0, 1, self)
         self.O = 452312848583266401712165347886883763197416885958242462530951491185349408851
-        #self.O = (2**3) *452312848583266401712165347886883763197416885958242462530951491185349408851
-
+        
 
     def point(self, x, y):
         return Point(x, y, self)
@@ -25,11 +24,7 @@ class Point:
 
         if not Point.validate(self):
             raise Exception(f"Provided coordinates {self} don't form a point on that curve")
-        #if Point.validate(self):
-            #print(str(self.x) + " , " +str(self.y) +"does not form a point")
-            #print("point")
 
-        # Point Validation in __init__
     def __neg__(self):
         x, y, p = self.x, self.y, self.p
         if x == 0 and y == 1:
@@ -74,8 +69,6 @@ class Point:
     def __repr__(self):
         return f'({self.x}, {self.y})'
 
-    # It's not efficient for now. For efficiency,
-    # we'll use doubling formula on twisted edwards curve
     def double(self):
         return self + self
 
@@ -89,8 +82,6 @@ class Point:
             print("point")
         else:
             print("not a point")
-
-        
 
     def compress(self):
         y_bin = bin(self.y)[2:].zfill(self.EC.b)
@@ -122,8 +113,6 @@ class Point:
 
 def main():
     ECC = StarkJub()
-    # Generator point starts with 206, 166
-    #P = Point(2192997259653830321980110858627110452394882798306613832002354879583275243830, 1870298999876184600770095838537746999597803359289427334927271486896920468444, ECC)
     P = Point(2065699795511519733436237708177164622668357918131020778486714673024550645584, 1666035597895264107928948444893966434436309134596180408598119672656400359905, ECC)    
     print(P)
     P.print_validation()

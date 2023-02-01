@@ -396,22 +396,6 @@ def StarkJubOldCheck():
     (A, B) = Curve_EdwardsToMontgomery(Fr, a, d)
     ExamineMontgomeryParameters(Fr, A, B)
 
-def StarkJubCheckFoundNewEdwards():
-    r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
-    Fr = GF(r)
-    a = 3618502788666131213697322783095070105623107215331596699973092056135872020480
-    d = 36659
-    x0 = Fr(2192997259653830321980110858627110452394882798306613832002354879583275243830)
-    y0 = Fr(1870298999876184600770095838537746999597803359289427334927271486896920468444)
-
-    EnsureValidEdwards(Fr, a, d)
-    EnsureOnEdwards(Fr, a, d, x0, y0)
-
-    (a_, d_, f) = scaling(a, d, r)
-    print(a_)
-    print(d_)
-    print(f)
-
 
 def StarkJubNewCheck():
     r = 3618502788666131213697322783095070105623107215331596699973092056135872020481
@@ -510,7 +494,6 @@ def JubJubCheck():
 
 #StarkJubOldCheck()
 StarkJubNewCheck()
-#StarkJubCheckFoundNewEdwards() 
 #EnsureValidEdwardsStarkJub()
 #JubJubCheck_Less()
 #StarkJubCheck()
