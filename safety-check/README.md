@@ -1,10 +1,11 @@
-Jubjub supporting evidence
+Starkjub supporting evidence
 --------------------------
 
+Disclaimer: This repository is forked from [daira/jubjub](https://github.com/daira/jubjub), and adapted to new twisted Edwards curve, Starkjub, thanks to ZCash and Daira to make [daira/jubjub](https://github.com/daira/jubjub) open-source
+
 This repository contains supporting evidence that the twisted Edwards curve
--x^2 + y^2 = 1 - (10240/10241).x^2.y^2 of rational points over
-GF(52435875175126190479447740508185965837690552500527637822603658699938581184513),
-[also called "Jubjub"](https://z.cash/technology/jubjub.html),
+ax^2 + y^2 = 1 + dx^2.y^2, where a = 146640 and d = 146636
+GF= (3618502788666131213697322783095070105623107215331596699973092056135872020481), which is the prime field used in [STARK Curve](https://docs.starkware.co/starkex/crypto/stark-curve.html)
 satisfies the [SafeCurves criteria](https://safecurves.cr.yp.to/index.html).
 
 The script ``verify.sage`` is based on
